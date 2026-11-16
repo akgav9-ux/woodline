@@ -56,3 +56,7 @@ body.gallery-lock{overflow:hidden}
  .gallery-bottom{margin-top:45px;padding-top:28px;display:block}.gallery-bottom .btn{margin-top:20px}
  .photo-lightbox{padding:60px 12px}.lightbox-prev{left:5px}.lightbox-next{right:5px}.lightbox-prev,.lightbox-next{width:38px;height:54px;font-size:34px}
 }
+
+/* Selected category image inside calculator */
+.kind-preview{display:grid;grid-template-columns:112px 1fr;align-items:center;gap:14px;margin-top:16px;padding:10px;border:1px solid var(--line);background:#eee9e0}.kind-preview img{display:block;width:112px;height:82px;object-fit:cover}.kind-preview span{font:500 12px Manrope;color:var(--ink)}
+@media(max-width:600px){.kind-preview{grid-template-columns:96px 1fr}.kind-preview img{width:96px;height:72px}}
