@@ -106,7 +106,7 @@ function updateResult(){
  $('#resultDimensions').textContent=description;
  $('#resultPrice').textContent=low.toLocaleString('ru-RU')+' – '+high.toLocaleString('ru-RU')+' ₽';
 }
-$('.cat').forEach(card=>{const cover=(gallery[card.dataset.kind]||gallery['Кухня'])[0];card.querySelector('img').src=imageUrl(cover);card.addEventListener('click',e=>{e.preventDefault();openGallery(card.dataset.kind)});});
+Array.from(document.querySelectorAll('.cat')).forEach(card=>{const cover=(gallery[card.dataset.kind]||gallery['Кухня'])[0];card.querySelector('img').src=imageUrl(cover);card.addEventListener('click',e=>{e.preventDefault();openGallery(card.dataset.kind)});});
 $$('#kinds button').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.kind)));
 $('#layout').addEventListener('change',()=>{if(step===1)render()});
 $('#next').onclick=()=>{
