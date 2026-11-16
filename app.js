@@ -12,19 +12,40 @@ const gallery={
 const rates={'Кухня':52000,'Прихожая':28000,'Спальня':36000,'Системы хранения':32000,'Детская':34000,'Гостиная':30000};
 const imageUrl=id=>'https://images.unsplash.com/'+id+'?auto=format&fit=crop&w=1000&q=85';
 function openGallery(value){
- let modal=$('#galleryModal');
- if(!modal){
-  modal=document.createElement('div');modal.id='galleryModal';modal.className='gallery-modal';
-  modal.innerHTML='<div class="gallery-panel"><button class="gallery-close" type="button" aria-label="Закрыть">×</button><small class="eyebrow">ПРИМЕРЫ РАБОТ</small><h2 id="galleryTitle"></h2><p class="gallery-note">Здесь показаны демонстрационные фотографии. В версии для производства владелец сайта сможет загружать свои проекты, и они появятся в этой галерее.</p><div class="gallery-images" id="galleryImages"></div><button class="btn gallery-calc" type="button">Рассчитать похожую мебель ↗</button></div>';
-  document.body.append(modal);
-  modal.querySelector('.gallery-close').onclick=()=>modal.classList.remove('open');
-  modal.querySelector('.gallery-calc').onclick=()=>{modal.classList.remove('open');choose(activeGallery);$('#calculator').scrollIntoView({behavior:'smooth'});};
-  modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+ let page=$('#galleryPage');
+ if(!page){
+  page=document.createElement('section');page.id='galleryPage';page.className='gallery-page';
+  page.innerHTML='<header class="gallery-header"><button class="gallery-back" type="button">← На главную</button><a class="brand" href="#"><span class="mark">W</span><span>WOODLINE<small>МЕБЕЛЬ ПО ВАШИМ РАЗМЕРАМ</small></span></a><span class="gallery-header-label">КАТАЛОГ РАБОТ</span></header><main class="gallery-content"><div class="gallery-heading"><small class="eyebrow">КОЛЛЕКЦИЯ WOODLINE / ПРИМЕРЫ РАБОТ</small><h1 id="galleryTitle"></h1><p class="gallery-note">Подборка интерьерных решений и примеров исполнения. Фотографии сейчас демонстрационные — их можно заменить на реальные работы мебельного производства.</p></div><div class="gallery-images" id="galleryImages"></div><div class="gallery-bottom"><div><small class="eyebrow">ЕСТЬ ПОХОЖАЯ ИДЕЯ?</small><h2>Создадим проект<br><em>под ваши размеры.</em></h2></div><button class="btn gallery-calc" type="button">Рассчитать похожую мебель ↗</button></div></main>';
+  document.body.append(page);
+  page.querySelector('.gallery-back').onclick=()=>page.classList.remove('open');
+  page.querySelector('.gallery-calc').onclick=()=>{page.classList.remove('open');choose(activeGallery);$('#calculator').scrollIntoView({behavior:'smooth'});};
+  page.querySelector('.brand').onclick=e=>{e.preventDefault();page.classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});};
  }
  activeGallery=value;
  $('#galleryTitle').textContent=value;
- $('#galleryImages').innerHTML=(gallery[value]||gallery['Кухня']).map((id,i)=>'<img src="'+imageUrl(id)+'" alt="'+value+' — пример '+(i+1)+'">').join('');
- modal.classList.add('open');
+ $('#galleryImages').innerHTML=(gallery[value]||gallery['Кухня']).map((id,i)=>'<button class="gallery-photo" type="button" data-photo="'+i+'" aria-label="Увеличить фотографию '+(i+1)+'"><img src="'+imageUrl(id)+'" alt="'+value+' — пример '+(i+1)+'"><span>Открыть фото ↗</span></button>').join('');
+ $$('#galleryImages .gallery-photo').forEach(button=>button.onclick=()=>openLightbox(value,Number(button.dataset.photo)));
+ page.classList.add('open');
+ document.body.classList.add('gallery-lock');
+}
+function openLightbox(category,index){
+ const images=gallery[category]||gallery['Кухня'];
+ let viewer=$('#photoLightbox');
+ if(!viewer){
+  viewer=document.createElement('div');viewer.id='photoLightbox';viewer.className='photo-lightbox';
+  viewer.innerHTML='<button class="lightbox-close" type="button" aria-label="Закрыть">×</button><button class="lightbox-prev" type="button" aria-label="Предыдущее фото">‹</button><img class="lightbox-image" alt=""><button class="lightbox-next" type="button" aria-label="Следующее фото">›</button><div class="lightbox-count"></div>';
+  document.body.append(viewer);
+  viewer.querySelector('.lightbox-close').onclick=()=>viewer.classList.remove('open');
+  viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.classList.remove('open')});
+  viewer.querySelector('.lightbox-prev').onclick=()=>{const i=(Number(viewer.dataset.index)+images.length-1)%images.length;openLightbox(viewer.dataset.category,i)};
+  viewer.querySelector('.lightbox-next').onclick=()=>{const i=(Number(viewer.dataset.index)+1)%images.length;openLightbox(viewer.dataset.category,i)};
+  document.addEventListener('keydown',e=>{if(!viewer.classList.contains('open'))return;if(e.key==='Escape')viewer.classList.remove('open');if(e.key==='ArrowLeft')viewer.querySelector('.lightbox-prev').click();if(e.key==='ArrowRight')viewer.querySelector('.lightbox-next').click()});
+ }
+ viewer.dataset.category=category;viewer.dataset.index=String(index);
+ viewer.querySelector('.lightbox-image').src=imageUrl(images[index]);
+ viewer.querySelector('.lightbox-image').alt=category+' — фотография '+(index+1);
+ viewer.querySelector('.lightbox-count').textContent=(index+1)+' / '+images.length+' · '+category;
+ viewer.classList.add('open');
 }
 function dimensions(){
  if(kind==='Кухня'){
