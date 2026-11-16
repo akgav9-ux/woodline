@@ -21,7 +21,8 @@ function openGallery(value){
   modal.querySelector('.gallery-calc').onclick=()=>{modal.classList.remove('open');choose(activeGallery);$('#calculator').scrollIntoView({behavior:'smooth'});};
   modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
  }
- activeGallery=value;\n $('#galleryTitle').textContent=value;
+ activeGallery=value;
+ $('#galleryTitle').textContent=value;
  $('#galleryImages').innerHTML=(gallery[value]||gallery['Кухня']).map((id,i)=>'<img src="'+imageUrl(id)+'" alt="'+value+' — пример '+(i+1)+'">').join('');
  modal.classList.add('open');
 }
