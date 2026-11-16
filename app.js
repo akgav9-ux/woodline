@@ -17,9 +17,9 @@ function openGallery(value){
   page=document.createElement('section');page.id='galleryPage';page.className='gallery-page';
   page.innerHTML='<header class="gallery-header"><button class="gallery-back" type="button">← На главную</button><a class="brand" href="#"><span class="mark">W</span><span>WOODLINE<small>МЕБЕЛЬ ПО ВАШИМ РАЗМЕРАМ</small></span></a><span class="gallery-header-label">КАТАЛОГ РАБОТ</span></header><main class="gallery-content"><div class="gallery-heading"><small class="eyebrow">КОЛЛЕКЦИЯ WOODLINE / ПРИМЕРЫ РАБОТ</small><h1 id="galleryTitle"></h1><p class="gallery-note">Подборка интерьерных решений и примеров исполнения. Фотографии сейчас демонстрационные — их можно заменить на реальные работы мебельного производства.</p></div><div class="gallery-images" id="galleryImages"></div><div class="gallery-bottom"><div><small class="eyebrow">ЕСТЬ ПОХОЖАЯ ИДЕЯ?</small><h2>Создадим проект<br><em>под ваши размеры.</em></h2></div><button class="btn gallery-calc" type="button">Рассчитать похожую мебель ↗</button></div></main>';
   document.body.append(page);
-  page.querySelector('.gallery-back').onclick=()=>page.classList.remove('open');
-  page.querySelector('.gallery-calc').onclick=()=>{page.classList.remove('open');choose(activeGallery);$('#calculator').scrollIntoView({behavior:'smooth'});};
-  page.querySelector('.brand').onclick=e=>{e.preventDefault();page.classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});};
+  page.querySelector('.gallery-back').onclick=()=>{page.classList.remove('open');document.body.classList.remove('gallery-lock')};
+  page.querySelector('.gallery-calc').onclick=()=>{page.classList.remove('open');document.body.classList.remove('gallery-lock');choose(activeGallery);$('#calculator').scrollIntoView({behavior:'smooth'});};
+  page.querySelector('.brand').onclick=e=>{e.preventDefault();page.classList.remove('open');document.body.classList.remove('gallery-lock');window.scrollTo({top:0,behavior:'smooth'});};
  }
  activeGallery=value;
  $('#galleryTitle').textContent=value;
@@ -37,8 +37,8 @@ function openLightbox(category,index){
   document.body.append(viewer);
   viewer.querySelector('.lightbox-close').onclick=()=>viewer.classList.remove('open');
   viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.classList.remove('open')});
-  viewer.querySelector('.lightbox-prev').onclick=()=>{const i=(Number(viewer.dataset.index)+images.length-1)%images.length;openLightbox(viewer.dataset.category,i)};
-  viewer.querySelector('.lightbox-next').onclick=()=>{const i=(Number(viewer.dataset.index)+1)%images.length;openLightbox(viewer.dataset.category,i)};
+  viewer.querySelector('.lightbox-prev').onclick=()=>{const list=gallery[viewer.dataset.category]||gallery['Кухня'];const i=(Number(viewer.dataset.index)+list.length-1)%list.length;openLightbox(viewer.dataset.category,i)};
+  viewer.querySelector('.lightbox-next').onclick=()=>{const list=gallery[viewer.dataset.category]||gallery['Кухня'];const i=(Number(viewer.dataset.index)+1)%list.length;openLightbox(viewer.dataset.category,i)};
   document.addEventListener('keydown',e=>{if(!viewer.classList.contains('open'))return;if(e.key==='Escape')viewer.classList.remove('open');if(e.key==='ArrowLeft')viewer.querySelector('.lightbox-prev').click();if(e.key==='ArrowRight')viewer.querySelector('.lightbox-next').click()});
  }
  viewer.dataset.category=category;viewer.dataset.index=String(index);
