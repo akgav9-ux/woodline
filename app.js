@@ -1,5 +1,5 @@
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-let step=0,kind='Кухня';
+let step=0,kind='Кухня',activeGallery='Кухня';
 const steps=$$('.step');
 const gallery={
 'Кухня':['photo-1600585154340-be6161a56a0c','photo-1600607687920-4e2a09cf159d','photo-1600607687939-ce8a6c25118c'],
@@ -18,10 +18,10 @@ function openGallery(value){
   modal.innerHTML='<div class="gallery-panel"><button class="gallery-close" type="button" aria-label="Закрыть">×</button><small class="eyebrow">ПРИМЕРЫ РАБОТ</small><h2 id="galleryTitle"></h2><p class="gallery-note">Здесь показаны демонстрационные фотографии. В версии для производства владелец сайта сможет загружать свои проекты, и они появятся в этой галерее.</p><div class="gallery-images" id="galleryImages"></div><button class="btn gallery-calc" type="button">Рассчитать похожую мебель ↗</button></div>';
   document.body.append(modal);
   modal.querySelector('.gallery-close').onclick=()=>modal.classList.remove('open');
-  modal.querySelector('.gallery-calc').onclick=()=>{modal.classList.remove('open');choose(value);$('#calculator').scrollIntoView({behavior:'smooth'});};
+  modal.querySelector('.gallery-calc').onclick=()=>{modal.classList.remove('open');choose(activeGallery);$('#calculator').scrollIntoView({behavior:'smooth'});};
   modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
  }
- $('#galleryTitle').textContent=value;
+ activeGallery=value;\n $('#galleryTitle').textContent=value;
  $('#galleryImages').innerHTML=(gallery[value]||gallery['Кухня']).map((id,i)=>'<img src="'+imageUrl(id)+'" alt="'+value+' — пример '+(i+1)+'">').join('');
  modal.classList.add('open');
 }
@@ -46,7 +46,7 @@ function render(){
  $('#layoutLabel').classList.toggle('hide',kind!=='Кухня');
  $('#counterLabel').classList.toggle('hide',kind!=='Кухня');
  $('#lightingOption').classList.toggle('hide',!['Кухня','Прихожая','Системы хранения','Спальня'].includes(kind));
- if(step===1)$('#dimensionFields').innerHTML=dimensions();
+ if(step===1){const saved={};$('#dimensionFields input').forEach(input=>saved[input.id]=input.value);$('#dimensionFields').innerHTML=dimensions();Object.entries(saved).forEach(([id,value])=>{const input=$('#'+id);if(input)input.value=value;});}
 }
 function choose(value){
  kind=value;
