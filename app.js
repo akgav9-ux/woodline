@@ -46,7 +46,7 @@ function render(){
  $('#layoutLabel').classList.toggle('hide',kind!=='Кухня');
  $('#counterLabel').classList.toggle('hide',kind!=='Кухня');
  $('#lightingOption').classList.toggle('hide',!['Кухня','Прихожая','Системы хранения','Спальня'].includes(kind));
- if(step===1){const saved={};$('#dimensionFields input').forEach(input=>saved[input.id]=input.value);$('#dimensionFields').innerHTML=dimensions();Object.entries(saved).forEach(([id,value])=>{const input=$('#'+id);if(input)input.value=value;});}
+ if(step===1){const saved={};$$('#dimensionFields input').forEach(input=>saved[input.id]=input.value);$('#dimensionFields').innerHTML=dimensions();Object.entries(saved).forEach(([id,value])=>{const input=$('#'+id);if(input)input.value=value;});}
 }
 function choose(value){
  kind=value;
