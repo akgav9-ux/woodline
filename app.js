@@ -5,11 +5,11 @@ const gallery={
 'Кухня':['photo-1600585154340-be6161a56a0c','photo-1600607687920-4e2a09cf159d','photo-1600607687939-ce8a6c25118c'],
 'Прихожая':['photo-1616486338812-3dadae4b4ace','photo-1618221195710-dd6b41faaea6','photo-1600210492486-724fe5c67fb0'],
 'Спальня':['photo-1616486029423-aaa4789e8c9a','photo-1600607687920-4e2a09cf159d','photo-1618221195710-dd6b41faaea6'],
-'Системы хранения':['photo-1618221195710-dd6b41faaea6','photo-1616486338812-3dadae4b4ace','photo-1600607687939-ce8a6c25118c'],
+'Гардеробная':['photo-1618221195710-dd6b41faaea6','photo-1616486338812-3dadae4b4ace','photo-1600607687939-ce8a6c25118c'],
 'Детская':['photo-1617104678098-de229db51175','photo-1600210492486-724fe5c67fb0','photo-1616486029423-aaa4789e8c9a'],
 'Гостиная':['photo-1600210492486-724fe5c67fb0','photo-1600210492493-0946911123ea','photo-1600607687920-4e2a09cf159d']
 };
-const rates={'Кухня':52000,'Прихожая':28000,'Спальня':36000,'Системы хранения':32000,'Детская':34000,'Гостиная':30000};
+const rates={'Кухня':52000,'Прихожая':28000,'Спальня':36000,'Гардеробная':32000,'Детская':34000,'Гостиная':30000};
 const imageUrl=id=>'https://images.unsplash.com/'+id+'?auto=format&fit=crop&w=1000&q=85';
 function openGallery(value){
  let page=$('#galleryPage');
@@ -67,7 +67,7 @@ function render(){
  $('#recalc').classList.toggle('hide',step!==2);
  $('#layoutLabel').classList.toggle('hide',kind!=='Кухня');
  $('#counterLabel').classList.toggle('hide',kind!=='Кухня');
- $('#lightingOption').classList.toggle('hide',!['Кухня','Прихожая','Системы хранения','Спальня'].includes(kind));
+ $('#lightingOption').classList.toggle('hide',!['Кухня','Прихожая','Гардеробная','Спальня'].includes(kind));
  if(step===1){const saved={};$$('#dimensionFields input').forEach(input=>saved[input.id]=input.value);$('#dimensionFields').innerHTML=dimensions();Object.entries(saved).forEach(([id,value])=>{const input=$('#'+id);if(input)input.value=value;});}
 }
 function choose(value){
